@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-smt-spring-security-stateless-examples
+smt-spring-security-stateless-web
 ===========
 
-Examples projects that show hoe to used the smt-spring-security-stateless library.
+This project contains the common classes used to create the base webapp.

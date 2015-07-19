@@ -25,47 +25,28 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smt-spring-security-stateless-basic</artifactId>
+    <artifactId>smt-spring-security-stateless-web</artifactId>
 
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
 
-    <description>
-        A basic example of using the smt-spring-security-stateless with it's deafult configuration.
-    </description>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>shiver.me.timbers.security.Application</mainClass>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <description>This project contains the common classes used to create the base webapp.</description>
 
     <dependencies>
         <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-spring-security-stateless-web</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-spring-security-stateless</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- Dependencies required to get Spring Boot auto-configuration to enable JSP/JSTL. -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
     </dependencies>
 </project>

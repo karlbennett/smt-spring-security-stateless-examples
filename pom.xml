@@ -45,6 +45,41 @@
     </properties>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.18.1</version>
+                    <configuration>
+                        <!-- This must be set otherwise the JSTL tags will not be registered when tests are run with maven. -->
+                        <useSystemClassLoader>false</useSystemClassLoader>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                    <executions>
+                        <execution>
+                            <!-- Tell the Spring Boot plugin to repackage the WAR file so that it is executable. -->
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -57,19 +92,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>
-                <executions>
-                    <execution>
-                        <!-- Tell the Spring Boot plugin to repackage the WAR file so that it is executable. -->
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
@@ -95,30 +117,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-spring-security-stateless</artifactId>
-            <version>1.1-SNAPSHOT</version>
-        </dependency>
-
-        <!-- Dependencies required to get Spring Boot auto-configuration to enable JSP/JSTL. -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
         </dependency>
 
         <dependency>
@@ -173,6 +171,12 @@
         </dependency>
     </dependencies>
 
+    <modules>
+        <module>smt-spring-security-stateless-web</module>
+        <module>smt-spring-security-stateless-basic</module>
+        <module>smt-spring-security-stateless-advanced</module>
+    </modules>
+
     <distributionManagement>
         <snapshotRepository>
             <id>no-where</id>
@@ -189,8 +193,4 @@
         <developerConnection>scm:git:git@github.com:shiver-me-timbers/${project.artifactId}.git</developerConnection>
         <url>https://github.com/shiver-me-timbers/${project.artifactId}</url>
     </scm>
-    <modules>
-        <module>smt-spring-security-stateless-basic</module>
-        <module>smt-spring-security-stateless-advanced</module>
-    </modules>
 </project>

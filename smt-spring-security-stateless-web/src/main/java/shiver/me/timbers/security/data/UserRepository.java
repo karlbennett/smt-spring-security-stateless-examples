@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package test.shiver.me.timbers.security.basic.step;
+package shiver.me.timbers.security.data;
 
-import cucumber.api.java.en.Given;
-import org.springframework.beans.factory.annotation.Autowired;
-import shiver.me.timbers.security.data.UserRepository;
+import org.springframework.data.repository.CrudRepository;
 import shiver.me.timbers.security.domain.User;
 
-public class BackgroundUserSteps extends SpringBootIntegrationSteps {
+public interface UserRepository extends CrudRepository<User, Long> {
 
-    @Autowired
-    private UserRepository repository;
-
-    @Given("^a user with the username \"([^\"]*)\" and password \"([^\"]*)\" exists$")
-    public void a_user_with_the_username_and_password_exists(String username, String password) {
-        repository.save(new User(username, password));
-    }
+    User findByUsername(String username);
 }

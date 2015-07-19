@@ -21,9 +21,6 @@ import org.junit.Test;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * @author Karl Bennett
- */
 public class PlaceHolderCreateTest {
 
     @Test

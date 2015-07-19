@@ -21,17 +21,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import shiver.me.timbers.security.basic.controller.UserHandlerMethodArgumentResolver;
-import shiver.me.timbers.security.basic.data.UserRepository;
-import shiver.me.timbers.security.basic.security.servlet.HttpServletRequestBinder;
+import shiver.me.timbers.security.controller.UserHandlerMethodArgumentResolver;
+import shiver.me.timbers.security.data.UserRepository;
 
 import java.util.List;
 
 @Configuration
 public class RoutingConfiguration extends WebMvcConfigurerAdapter {
-
-    @Autowired
-    private HttpServletRequestBinder<String> httpServletRequestBinder;
 
     @Autowired
     private UserRepository userRepository;
@@ -43,6 +39,6 @@ public class RoutingConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new UserHandlerMethodArgumentResolver(httpServletRequestBinder, userRepository));
+        argumentResolvers.add(new UserHandlerMethodArgumentResolver(userRepository));
     }
 }
