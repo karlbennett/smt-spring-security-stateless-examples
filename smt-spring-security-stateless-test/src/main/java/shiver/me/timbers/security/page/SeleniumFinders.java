@@ -14,40 +14,32 @@
  * limitations under the License.
  */
 
-package test.shiver.me.timbers.security.basic.page;
+package shiver.me.timbers.security.page;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HomePage {
+public class SeleniumFinders implements Finders {
 
     private final WebDriver driver;
-    private final BaseUrl baseUrl;
+    private final Bys bys;
 
     @Autowired
-    public HomePage(WebDriver driver, BaseUrl baseUrl) {
+    public SeleniumFinders(WebDriver driver, Bys bys) {
         this.driver = driver;
-        this.baseUrl = baseUrl;
+        this.bys = bys;
     }
 
-    public String getTitle() {
-        return driver.getTitle();
+    @Override
+    public String findIdByLabel(String text) {
+        return driver.findElement(bys.byLabel(text)).getAttribute("for");
     }
 
-    public String signedInUsername() {
-        try {
-            return driver.findElement(By.id("signed-in-username")).getText();
-        } catch (NoSuchElementException e) {
-            return "The user is not signed in.";
-        }
-    }
-
-    public HomePage visit() {
-        driver.get(baseUrl.toString());
-        return this;
+    @Override
+    public void enterTextByLabel(String labelName, String text) {
+        driver.findElement(By.id(findIdByLabel(labelName))).sendKeys(text);
     }
 }

@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
-package test.shiver.me.timbers.security.basic.page;
+package shiver.me.timbers.security.page;
 
-import org.openqa.selenium.By;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import static java.lang.String.format;
 
 @Component
-public class StaticBys implements Bys {
+public class BaseUrl implements ApplicationContextAware {
+
+    private ConfigurableApplicationContext context;
 
     @Override
-    public By byLabel(String text) {
-        return By.xpath(format("//label[text()[contains(.,'%s')]]", text));
+    public void setApplicationContext(ApplicationContext context) throws BeansException {
+        this.context = (ConfigurableApplicationContext) context;
     }
 
     @Override
-    public By byValue(String value) {
-        return By.xpath(format("//input[@value='%s']", value));
+    public String toString() {
+        return format("http://localhost:%s/spring", context.getEnvironment().getProperty("local.server.port"));
     }
 }

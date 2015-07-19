@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package test.shiver.me.timbers.security.basic.step;
+package shiver.me.timbers.security.step;
 
 import cucumber.api.java.en.Given;
 import org.springframework.beans.factory.annotation.Autowired;

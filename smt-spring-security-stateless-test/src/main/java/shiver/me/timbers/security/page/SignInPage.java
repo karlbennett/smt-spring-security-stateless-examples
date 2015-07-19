@@ -14,32 +14,47 @@
  * limitations under the License.
  */
 
-package test.shiver.me.timbers.security.basic.page;
+package shiver.me.timbers.security.page;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SeleniumFinders implements Finders {
+public class SignInPage {
 
     private final WebDriver driver;
+    private final BaseUrl baseUrl;
+    private final Finders finders;
     private final Bys bys;
 
     @Autowired
-    public SeleniumFinders(WebDriver driver, Bys bys) {
+    public SignInPage(WebDriver driver, BaseUrl baseUrl, Finders finders, Bys bys) {
         this.driver = driver;
+        this.baseUrl = baseUrl;
+        this.finders = finders;
         this.bys = bys;
     }
 
-    @Override
-    public String findIdByLabel(String text) {
-        return driver.findElement(bys.byLabel(text)).getAttribute("for");
+    public void enterUsername(String username) {
+        finders.enterTextByLabel("User Name", username);
     }
 
-    @Override
-    public void enterTextByLabel(String labelName, String text) {
-        driver.findElement(By.id(findIdByLabel(labelName))).sendKeys(text);
+    public void enterPassword(String password) {
+        finders.enterTextByLabel("Password", password);
+    }
+
+    public HomePage signIn() {
+        driver.findElement(bys.byValue("Sign In")).click();
+        return new HomePage(driver, baseUrl);
+    }
+
+    public SignInPage signOut() {
+        driver.manage().deleteAllCookies();
+        return this;
+    }
+
+    public String getTitle() {
+        return driver.getTitle();
     }
 }

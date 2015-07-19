@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package test.shiver.me.timbers.security.basic;
+package shiver.me.timbers.security.step;
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationContextLoader;
+import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import shiver.me.timbers.security.CucumberConfiguration;
 
-@RunWith(Cucumber.class)
-@CucumberOptions(format = {"pretty", "html:target/cucumber-html-report", "json:target/cucumber-json-report.json"})
-public class ITCucumber {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = CucumberConfiguration.class, loader = SpringApplicationContextLoader.class)
+@WebIntegrationTest({"server.port=0", "management.port=0"})
+public abstract class SpringBootIntegrationSteps {
 }
