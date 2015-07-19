@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers;
+package shiver.me.timbers.security.page;
 
-/**
- * Place holder class.
- *
- * @author Karl Bennett
- */
-public final class PlaceHolder {
+import org.openqa.selenium.By;
 
-    private PlaceHolder() {
-    }
+public interface Bys {
+
+    By byLabel(String text);
+
+    By byValue(String value);
 }

@@ -41,7 +41,7 @@ public class User implements Serializable {
 
     @NotNull
     @Size(min = 1)
-    @Column(unique = true, nullable = false)
+    @Column(unique = false, nullable = false)
     private final String password;
 
 

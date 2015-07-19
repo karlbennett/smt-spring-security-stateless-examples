@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package test.shiver.me.timbers.security.basic.page;
+package shiver.me.timbers.security.page;
 
-import org.openqa.selenium.By;
+public interface Finders {
 
-public interface Bys {
+    String findIdByLabel(String text);
 
-    public By byLabel(String text);
-
-    public By byValue(String value);
+    void enterTextByLabel(String labelName, String text);
 }

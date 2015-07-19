@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Configuration;
 import static java.lang.String.format;
 
 @Configuration
-@ComponentScan(basePackages = {"test.shiver.me.timbers", "shiver.me.timbers"})
+@ComponentScan(basePackages = "shiver.me.timbers")
 public class CucumberConfiguration {
 
     @Bean(destroyMethod = "quit")

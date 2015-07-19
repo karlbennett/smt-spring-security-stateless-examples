@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security.spring;
+package shiver.me.timbers.security.advanced.spring;
 
 import org.junit.Test;
 import org.springframework.security.core.userdetails.UserDetails;

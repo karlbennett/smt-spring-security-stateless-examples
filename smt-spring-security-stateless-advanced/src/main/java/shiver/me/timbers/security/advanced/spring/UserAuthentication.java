@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security.spring;
+package shiver.me.timbers.security.advanced.spring;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import shiver.me.timbers.security.domain.User;
+import shiver.me.timbers.security.spring.UserDetails;
 
 import javax.security.auth.Subject;
 import java.util.Collection;
