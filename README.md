@@ -17,3 +17,6 @@ smt-spring-security-stateless-examples
 ===========
 
 Examples projects that show hoe to used the smt-spring-security-stateless library.
+
+### Status
+[![Build Status](https://travis-ci.org/shiver-me-timbers/smt-spring-security-stateless-examples.svg?branch=master)](https://travis-ci.org/shiver-me-timbers/smt-spring-security-stateless-examples)
