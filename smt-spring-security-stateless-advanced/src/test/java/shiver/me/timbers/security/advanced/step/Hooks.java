@@ -20,7 +20,7 @@ import cucumber.api.java.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import shiver.me.timbers.security.advanced.token.JwtTokenFactory;
-import shiver.me.timbers.security.step.SpringBootIntegrationSteps;
+import shiver.me.timbers.security.test.step.SpringBootIntegrationSteps;
 
 import java.lang.reflect.Field;
 

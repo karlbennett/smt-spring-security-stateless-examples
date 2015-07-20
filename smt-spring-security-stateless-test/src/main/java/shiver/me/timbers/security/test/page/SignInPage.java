@@ -14,40 +14,47 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security.page;
+package shiver.me.timbers.security.test.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HomePage {
+public class SignInPage {
 
     private final WebDriver driver;
     private final BaseUrl baseUrl;
+    private final Finders finders;
+    private final Bys bys;
 
     @Autowired
-    public HomePage(WebDriver driver, BaseUrl baseUrl) {
+    public SignInPage(WebDriver driver, BaseUrl baseUrl, Finders finders, Bys bys) {
         this.driver = driver;
         this.baseUrl = baseUrl;
+        this.finders = finders;
+        this.bys = bys;
+    }
+
+    public void enterUsername(String username) {
+        finders.enterTextByLabel("User Name", username);
+    }
+
+    public void enterPassword(String password) {
+        finders.enterTextByLabel("Password", password);
+    }
+
+    public HomePage signIn() {
+        driver.findElement(bys.byValue("Sign In")).click();
+        return new HomePage(driver, baseUrl);
+    }
+
+    public SignInPage signOut() {
+        driver.manage().deleteAllCookies();
+        return this;
     }
 
     public String getTitle() {
         return driver.getTitle();
-    }
-
-    public String signedInUsername() {
-        try {
-            return driver.findElement(By.id("signed-in-username")).getText();
-        } catch (NoSuchElementException e) {
-            return "The user is not signed in.";
-        }
-    }
-
-    public HomePage visit() {
-        driver.get(baseUrl.toString());
-        return this;
     }
 }

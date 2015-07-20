@@ -19,9 +19,9 @@ package shiver.me.timbers.security.advanced.step;
 import cucumber.api.java.en.Given;
 import org.springframework.beans.factory.annotation.Autowired;
 import shiver.me.timbers.security.advanced.token.JwtTokenFactory;
-import shiver.me.timbers.security.step.BackgroundUserSteps;
-import shiver.me.timbers.security.step.SignInSteps;
-import shiver.me.timbers.security.step.SpringBootIntegrationSteps;
+import shiver.me.timbers.security.test.step.BackgroundUserSteps;
+import shiver.me.timbers.security.test.step.SignInSteps;
+import shiver.me.timbers.security.test.step.SpringBootIntegrationSteps;
 
 public class ExpiredSignInSteps extends SpringBootIntegrationSteps {
 

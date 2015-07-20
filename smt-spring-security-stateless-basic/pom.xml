@@ -38,15 +38,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <dependenciesToScan>
-                        <dependency>com.github.shiver-me-timbers:smt-spring-security-stateless-test</dependency>
-                    </dependenciesToScan>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>

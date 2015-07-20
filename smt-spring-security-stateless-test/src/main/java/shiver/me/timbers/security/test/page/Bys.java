@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security;
+package shiver.me.timbers.security.test.page;
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
-import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 
-@RunWith(Cucumber.class)
-@CucumberOptions(format = {"pretty", "html:target/cucumber-html-report", "json:target/cucumber-json-report.json"})
-public class ITCucumber {
+public interface Bys {
+
+    By byLabel(String text);
+
+    By byValue(String value);
 }

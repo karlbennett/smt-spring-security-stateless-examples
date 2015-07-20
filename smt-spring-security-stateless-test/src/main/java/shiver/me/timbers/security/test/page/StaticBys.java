@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security.step;
+package shiver.me.timbers.security.test.page;
 
-import cucumber.api.java.en.Given;
-import org.springframework.beans.factory.annotation.Autowired;
-import shiver.me.timbers.security.data.UserRepository;
-import shiver.me.timbers.security.domain.User;
+import org.openqa.selenium.By;
+import org.springframework.stereotype.Component;
 
-public class BackgroundUserSteps extends SpringBootIntegrationSteps {
+import static java.lang.String.format;
 
-    @Autowired
-    private UserRepository repository;
+@Component
+public class StaticBys implements Bys {
 
-    @Given("^a user with the username \"([^\"]*)\" and password \"([^\"]*)\" exists$")
-    public void a_user_with_the_username_and_password_exists(String username, String password) {
-        repository.save(new User(username, password));
+    @Override
+    public By byLabel(String text) {
+        return By.xpath(format("//label[text()[contains(.,'%s')]]", text));
+    }
+
+    @Override
+    public By byValue(String value) {
+        return By.xpath(format("//input[@value='%s']", value));
     }
 }

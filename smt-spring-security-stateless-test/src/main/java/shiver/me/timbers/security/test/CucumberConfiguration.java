@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security;
+package shiver.me.timbers.security.test;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

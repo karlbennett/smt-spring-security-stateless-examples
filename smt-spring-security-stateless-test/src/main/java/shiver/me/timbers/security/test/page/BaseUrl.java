@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security.page;
+package shiver.me.timbers.security.test.page;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

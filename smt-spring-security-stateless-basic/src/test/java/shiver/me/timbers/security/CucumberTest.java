@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security.page;
+package shiver.me.timbers.security;
 
-import org.openqa.selenium.By;
-import org.springframework.stereotype.Component;
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+import org.junit.runner.RunWith;
 
-import static java.lang.String.format;
-
-@Component
-public class StaticBys implements Bys {
-
-    @Override
-    public By byLabel(String text) {
-        return By.xpath(format("//label[text()[contains(.,'%s')]]", text));
-    }
-
-    @Override
-    public By byValue(String value) {
-        return By.xpath(format("//input[@value='%s']", value));
-    }
+@RunWith(Cucumber.class)
+@CucumberOptions(format = {"pretty", "html:target/cucumber-html-report", "json:target/cucumber-json-report.json"})
+public class CucumberTest {
 }

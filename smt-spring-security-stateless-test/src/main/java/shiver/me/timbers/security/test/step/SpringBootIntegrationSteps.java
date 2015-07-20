@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security.step;
+package shiver.me.timbers.security.test.step;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationContextLoader;
@@ -22,7 +22,7 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import shiver.me.timbers.security.CucumberConfiguration;
+import shiver.me.timbers.security.test.CucumberConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = CucumberConfiguration.class, loader = SpringApplicationContextLoader.class)

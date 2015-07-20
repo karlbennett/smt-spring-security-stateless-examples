@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security.step;
+package shiver.me.timbers.security.test.step;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
-import shiver.me.timbers.security.page.HomePage;
-import shiver.me.timbers.security.page.SignInPage;
+import shiver.me.timbers.security.test.page.HomePage;
+import shiver.me.timbers.security.test.page.SignInPage;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
