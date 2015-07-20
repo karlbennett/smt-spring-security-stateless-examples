@@ -74,7 +74,6 @@ public class UserAuthentication implements Authentication {
         return user.getUsername();
     }
 
-    @Override
     public boolean implies(Subject subject) {
         return false;
     }
