@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-spring-security-stateless</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1</version>
         </dependency>
 
         <dependency>
@@ -90,6 +90,15 @@
             <groupId>org.unitils</groupId>
             <artifactId>unitils-core</artifactId>
             <version>3.4.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Have to add the httpclient because the version supplied by Spring Boot is not compatible with the latest -->
+        <!-- version of selenium. -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.4.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
