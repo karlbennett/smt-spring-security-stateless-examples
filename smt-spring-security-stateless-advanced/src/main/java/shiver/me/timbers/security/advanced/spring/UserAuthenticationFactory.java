@@ -23,7 +23,7 @@ import shiver.me.timbers.security.spring.AuthenticationFactory;
 /**
  * @author Karl Bennett
  */
-public class UserAuthenticationFactory implements AuthenticationFactory {
+public class UserAuthenticationFactory implements AuthenticationFactory<String> {
 
     private final UserRepository userRepository;
 

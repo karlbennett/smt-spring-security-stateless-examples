@@ -29,7 +29,7 @@ import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 /**
  * @author Karl Bennett
  */
-public class JwtTokenFactory implements TokenFactory {
+public class JwtTokenFactory implements TokenFactory<String> {
 
     private static final long FIVE_MINUTES = 300000L;
 
