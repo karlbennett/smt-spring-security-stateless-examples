@@ -18,6 +18,7 @@ package shiver.me.timbers.security.advanced.spring;
 
 import org.springframework.security.core.Authentication;
 import shiver.me.timbers.security.data.UserRepository;
+import shiver.me.timbers.security.domain.User;
 import shiver.me.timbers.security.spring.AbstractNullSafeAuthenticationConverter;
 
 /**
@@ -38,6 +39,13 @@ public class UserAuthenticationConverter extends AbstractNullSafeAuthenticationC
 
     @Override
     protected Authentication nullSafeConvert(String principal) {
-        return new UserAuthentication(userRepository.findByUsername(principal));
+
+        final User user = userRepository.findByUsername(principal);
+
+        if (user != null) {
+            return new UserAuthentication(user);
+        }
+
+        return null;
     }
 }
