@@ -18,21 +18,26 @@ package shiver.me.timbers.security.advanced.spring;
 
 import org.springframework.security.core.Authentication;
 import shiver.me.timbers.security.data.UserRepository;
-import shiver.me.timbers.security.spring.AuthenticationFactory;
+import shiver.me.timbers.security.spring.AbstractNullSafeAuthenticationConverter;
 
 /**
  * @author Karl Bennett
  */
-public class UserAuthenticationFactory implements AuthenticationFactory<String> {
+public class UserAuthenticationConverter extends AbstractNullSafeAuthenticationConverter<String> {
 
     private final UserRepository userRepository;
 
-    public UserAuthenticationFactory(UserRepository userRepository) {
+    public UserAuthenticationConverter(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public Authentication create(String subject) {
-        return new UserAuthentication(userRepository.findByUsername(subject));
+    public String convert(Authentication authentication) {
+        return authentication.getName();
+    }
+
+    @Override
+    protected Authentication nullSafeConvert(String principal) {
+        return new UserAuthentication(userRepository.findByUsername(principal));
     }
 }

@@ -36,7 +36,6 @@ public class UserAuthentication implements Authentication {
     public UserAuthentication(User user) {
         this.user = user;
         this.userDetails = new UserDetails(user);
-
     }
 
     @Override

@@ -27,12 +27,14 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import shiver.me.timbers.security.advanced.spring.UserAuthenticationFactory;
-import shiver.me.timbers.security.advanced.token.JwtTokenFactory;
+import shiver.me.timbers.security.advanced.spring.UserAuthenticationConverter;
+import shiver.me.timbers.security.advanced.token.ExpiringJwtTokenFactory;
 import shiver.me.timbers.security.data.UserRepository;
 import shiver.me.timbers.security.spring.StatelessAuthenticationFilter;
 import shiver.me.timbers.security.spring.StatelessAuthenticationSuccessHandler;
 import shiver.me.timbers.security.token.TokenFactory;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -41,7 +43,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private TokenFactory tokenFactory;
+    private TokenFactory<String> tokenFactory;
 
     @Autowired
     private UserRepository userRepository;
@@ -52,17 +54,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        final UserAuthenticationConverter converter = new UserAuthenticationConverter(userRepository);
+
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.csrf().disable();
         http.authorizeRequests().anyRequest().authenticated();
         http.formLogin()
             .loginPage("/spring/signIn").permitAll()
             // The token factory is updated so that it now checks the expiry date.
-            .successHandler(new StatelessAuthenticationSuccessHandler(tokenFactory, "/spring/"));
+            .successHandler(new StatelessAuthenticationSuccessHandler(tokenFactory, converter, "/spring/"));
         http.logout().logoutUrl("/spring/signOut").logoutSuccessUrl("/spring/");
         http.addFilterBefore(
             // The authentication factory now returns the entire user as the principal.
-            new StatelessAuthenticationFilter(tokenFactory, new UserAuthenticationFactory(userRepository)),
+            new StatelessAuthenticationFilter(tokenFactory, converter),
             UsernamePasswordAuthenticationFilter.class
         );
     }
@@ -73,7 +77,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtTokenFactory tokenFactory(@Value("${jwt.secret}") String secret, @Value("${jwt.expiry}") long expiry) {
-        return new JwtTokenFactory(secret, expiry);
+    public ExpiringJwtTokenFactory tokenFactory(
+        @Value("${jwt.secret}") String secret,
+        @Value("${jwt.expiry.duration}") long duration,
+        @Value("${jwt.expiry.unit}") TimeUnit unit
+    ) {
+        return new ExpiringJwtTokenFactory(secret, duration, unit);
     }
 }

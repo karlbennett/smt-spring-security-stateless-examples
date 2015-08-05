@@ -18,10 +18,11 @@ package shiver.me.timbers.security.advanced.step;
 
 import cucumber.api.java.en.Given;
 import org.springframework.beans.factory.annotation.Autowired;
-import shiver.me.timbers.security.advanced.token.JwtTokenFactory;
 import shiver.me.timbers.security.test.step.BackgroundUserSteps;
 import shiver.me.timbers.security.test.step.SignInSteps;
 import shiver.me.timbers.security.test.step.SpringBootIntegrationSteps;
+
+import java.util.concurrent.TimeUnit;
 
 public class ExpiredSignInSteps extends SpringBootIntegrationSteps {
 
@@ -32,11 +33,12 @@ public class ExpiredSignInSteps extends SpringBootIntegrationSteps {
     private SignInSteps signInSteps;
 
     @Autowired
-    private JwtTokenFactory jwtTokenFactory;
+    private Hooks hooks;
 
-    @Given("^the token expiry is \"(\\d+)\" milliseconds$")
-    public void the_token_expiry_is_milliseconds(Long expiry) throws IllegalAccessException {
-        Hooks.setExpiry(jwtTokenFactory, expiry);
+    @Given("^the token expiry is \"(\\d+)\" \"([^\"]*)\"$")
+    public void the_token_expiry_is(Long duration, String unit) throws Throwable {
+        hooks.setDuration(duration);
+        hooks.setUnit(TimeUnit.valueOf(unit));
     }
 
     @Given("^the the user is signed in with the with the username \"([^\"]*)\" and password \"([^\"]*)\"$")
@@ -52,8 +54,8 @@ public class ExpiredSignInSteps extends SpringBootIntegrationSteps {
     public void the_sign_in_has_expired() throws InterruptedException {
     }
 
-    @Given("^the \"(\\d+)\" milliseconds has passed$")
-    public void the_milliseconds_has_passed(Long expiry) throws InterruptedException {
-        Thread.sleep(expiry);
+    @Given("^the \"(\\d+)\" \"([^\"]*)\" has passed$")
+    public void the_has_passed(Long duration, String unit) throws InterruptedException {
+        Thread.sleep(TimeUnit.valueOf(unit).toMillis(duration));
     }
 }

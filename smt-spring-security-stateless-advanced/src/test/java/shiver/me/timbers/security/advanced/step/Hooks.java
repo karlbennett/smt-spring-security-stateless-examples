@@ -19,18 +19,20 @@ package shiver.me.timbers.security.advanced.step;
 import cucumber.api.java.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import shiver.me.timbers.security.advanced.token.JwtTokenFactory;
+import shiver.me.timbers.security.advanced.token.ExpiringJwtTokenFactory;
 import shiver.me.timbers.security.test.step.SpringBootIntegrationSteps;
 
 import java.lang.reflect.Field;
+import java.util.concurrent.TimeUnit;
 
 public class Hooks extends SpringBootIntegrationSteps {
 
-    private static final Field EXPIRY_FIELD = expiryField();
+    private static final Field DURATION_FIELD = getField(ExpiringJwtTokenFactory.class, "duration");
+    private static final Field UNIT_FIELD = getField(ExpiringJwtTokenFactory.class, "unit");
 
-    private static Field expiryField() {
+    private static Field getField(Class type, String name) {
         try {
-            final Field expiry = JwtTokenFactory.class.getDeclaredField("expiry");
+            final Field expiry = type.getDeclaredField(name);
             expiry.setAccessible(true);
             return expiry;
         } catch (NoSuchFieldException e) {
@@ -38,18 +40,26 @@ public class Hooks extends SpringBootIntegrationSteps {
         }
     }
 
-    @Value("${jwt.expiry}")
-    private long expiry;
+    @Value("${jwt.expiry.duration}")
+    private long duration;
+
+    @Value("${jwt.expiry.unit}")
+    private TimeUnit unit;
 
     @Autowired
-    private JwtTokenFactory jwtTokenFactory;
+    private ExpiringJwtTokenFactory expiringJwtTokenFactory;
 
     @Before
     public void setup() throws IllegalAccessException {
-        setExpiry(jwtTokenFactory, expiry);
+        setDuration(duration);
+        setUnit(unit);
     }
 
-    public static void setExpiry(JwtTokenFactory jwtTokenFactory, long expiry) throws IllegalAccessException {
-        EXPIRY_FIELD.set(jwtTokenFactory, expiry);
+    public void setDuration(long duration) throws IllegalAccessException {
+        DURATION_FIELD.set(expiringJwtTokenFactory, duration);
+    }
+
+    public void setUnit(TimeUnit unit) throws IllegalAccessException {
+        UNIT_FIELD.set(expiringJwtTokenFactory, unit);
     }
 }
