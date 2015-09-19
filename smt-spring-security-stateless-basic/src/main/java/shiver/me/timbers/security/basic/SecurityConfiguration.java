@@ -25,9 +25,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import shiver.me.timbers.security.servlet.AuthenticationHttpServletBinder;
+import shiver.me.timbers.security.servlet.XAuthTokenHttpServletBinder;
+import shiver.me.timbers.security.spring.AuthenticatedAuthenticationConverter;
+import shiver.me.timbers.security.spring.ServletExceptionMapper;
 import shiver.me.timbers.security.spring.StatelessAuthenticationFilter;
 import shiver.me.timbers.security.spring.StatelessAuthenticationSuccessHandler;
+import shiver.me.timbers.security.spring.StaticSecurityContextHolder;
+import shiver.me.timbers.security.token.JwtTokenFactory;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -43,6 +50,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        final AuthenticationHttpServletBinder<String> httpServletBinder = new AuthenticationHttpServletBinder<>(
+            new XAuthTokenHttpServletBinder<>(new JwtTokenFactory<>(String.class, secret)),
+            new AuthenticatedAuthenticationConverter()
+        );
+        final ServletExceptionMapper exceptionMapper = new ServletExceptionMapper();
 
         // Make Spring Security stateless. This means no session will be created by Spring Security, nor will it use any
         // previously existing session.
@@ -62,12 +75,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             // signed out. Unfortunately using this configuration method will cause our custom success handler to be
             // overridden with the default success handler. So to replicate the defaultSuccessUrl("/path/")
             // configuration we will instead configure the path on our success handler.
-            .successHandler(new StatelessAuthenticationSuccessHandler(secret, "/spring/"));
+            .successHandler(new StatelessAuthenticationSuccessHandler(
+                httpServletBinder,
+                new SimpleUrlAuthenticationSuccessHandler("/spring/"),
+                exceptionMapper
+            ));
         http.logout().logoutUrl("/spring/signOut").logoutSuccessUrl("/spring/");
         // Add our stateless authentication filter before the default sign in filter. The default sign in filter is
         // still used for the initial sign in, but if a user is authenticated we need to acknowledge this before it is
         // reached.
-        http.addFilterBefore(new StatelessAuthenticationFilter(secret), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(
+            new StatelessAuthenticationFilter(httpServletBinder, new StaticSecurityContextHolder(), exceptionMapper),
+            UsernamePasswordAuthenticationFilter.class
+        );
     }
 
     @Override

@@ -26,12 +26,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import shiver.me.timbers.security.advanced.spring.UserAuthenticationConverter;
 import shiver.me.timbers.security.advanced.token.ExpiringJwtTokenFactory;
 import shiver.me.timbers.security.data.UserRepository;
+import shiver.me.timbers.security.servlet.AuthenticationHttpServletBinder;
+import shiver.me.timbers.security.servlet.XAuthTokenHttpServletBinder;
+import shiver.me.timbers.security.spring.ServletExceptionMapper;
 import shiver.me.timbers.security.spring.StatelessAuthenticationFilter;
 import shiver.me.timbers.security.spring.StatelessAuthenticationSuccessHandler;
+import shiver.me.timbers.security.spring.StaticSecurityContextHolder;
 import shiver.me.timbers.security.token.TokenFactory;
 
 import java.util.concurrent.TimeUnit;
@@ -55,6 +60,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         final UserAuthenticationConverter converter = new UserAuthenticationConverter(userRepository);
+        final AuthenticationHttpServletBinder<String> httpServletBinder = new AuthenticationHttpServletBinder<>(
+            new XAuthTokenHttpServletBinder<>(tokenFactory),
+            converter
+        );
+        final ServletExceptionMapper exceptionMapper = new ServletExceptionMapper();
 
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.csrf().disable();
@@ -62,11 +72,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.formLogin()
             .loginPage("/spring/signIn").permitAll()
             // The token factory is updated so that it now checks the expiry date.
-            .successHandler(new StatelessAuthenticationSuccessHandler(tokenFactory, converter, "/spring/"));
+            .successHandler(new StatelessAuthenticationSuccessHandler(
+                httpServletBinder,
+                new SimpleUrlAuthenticationSuccessHandler("/spring/"),
+                exceptionMapper
+            ));
         http.logout().logoutUrl("/spring/signOut").logoutSuccessUrl("/spring/");
         http.addFilterBefore(
             // The authentication factory now returns the entire user as the principal.
-            new StatelessAuthenticationFilter(tokenFactory, converter),
+            new StatelessAuthenticationFilter(httpServletBinder, new StaticSecurityContextHolder(), exceptionMapper),
             UsernamePasswordAuthenticationFilter.class
         );
     }
