@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.security.test.step;
+package shiver.me.timbers.security.web.controller;
 
-import cucumber.api.java.en.Given;
-import org.springframework.beans.factory.annotation.Autowired;
-import shiver.me.timbers.security.web.data.UserRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import shiver.me.timbers.security.web.domain.User;
 
-public class BackgroundUserSteps extends SpringBootIntegrationSteps {
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-    @Autowired
-    private UserRepository repository;
+@Controller
+@RequestMapping("/")
+public class HomeController {
 
-    @Given("^a user with the username \"([^\"]*)\" and password \"([^\"]*)\" exists$")
-    public void a_user_with_the_username_and_password_exists(String username, String password) {
-        repository.save(new User(username, password));
+    @RequestMapping(method = GET)
+    public ModelAndView display(User user) {
+        return new ModelAndView("home").addObject("username", user.getUsername());
     }
 }

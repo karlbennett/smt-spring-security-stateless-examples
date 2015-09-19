@@ -41,7 +41,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>shiver.me.timbers.security.Application</mainClass>
+                    <mainClass>shiver.me.timbers.security.web.Application</mainClass>
                 </configuration>
             </plugin>
         </plugins>
