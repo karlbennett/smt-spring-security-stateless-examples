@@ -67,7 +67,7 @@
             <dependency>
                 <groupId>com.github.shiver-me-timbers</groupId>
                 <artifactId>smt-spring-security-stateless</artifactId>
-                <version>1.6</version>
+                <version>1.8</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
