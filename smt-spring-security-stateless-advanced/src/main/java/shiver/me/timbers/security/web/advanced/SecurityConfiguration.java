@@ -26,9 +26,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import shiver.me.timbers.security.spring.AuthenticationConverter;
 import shiver.me.timbers.security.spring.StatelessWebSecurityConfigurerAdapter;
-import shiver.me.timbers.security.token.TokenFactory;
+import shiver.me.timbers.security.token.JwtTokenParser;
+import shiver.me.timbers.security.token.TokenParser;
 import shiver.me.timbers.security.web.advanced.spring.UserAuthenticationConverter;
-import shiver.me.timbers.security.web.advanced.token.ExpiringJwtTokenFactory;
 import shiver.me.timbers.security.web.data.UserRepository;
 
 import java.util.concurrent.TimeUnit;
@@ -67,8 +67,13 @@ public class SecurityConfiguration extends StatelessWebSecurityConfigurerAdapter
 
     @Bean
     @Override
-    public TokenFactory<String> tokenFactory(String secret) {
-        return new ExpiringJwtTokenFactory(secret, duration, unit);
+    public TokenParser<String> tokenParser(String secret) {
+        return super.tokenParser(secret);
+    }
+
+    @Override
+    protected void configure(JwtTokenParser tokenParser) {
+        tokenParser.willExpireAfter(duration, unit);
     }
 
     @Override

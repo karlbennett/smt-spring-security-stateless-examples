@@ -37,8 +37,7 @@ public class ExpiredSignInSteps extends SpringBootIntegrationSteps {
 
     @Given("^the token expiry is \"(\\d+)\" \"([^\"]*)\"$")
     public void the_token_expiry_is(Long duration, String unit) throws Throwable {
-        hooks.setDuration(duration);
-        hooks.setUnit(TimeUnit.valueOf(unit));
+        hooks.setupExpiration(duration, TimeUnit.valueOf(unit));
     }
 
     @Given("^the the user is signed in with the with the username \"([^\"]*)\" and password \"([^\"]*)\"$")
